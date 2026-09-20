@@ -33,9 +33,7 @@
     margin-bottom: 30px;
     font-weight: 600;
   }
-  .field {
-    margin-bottom: 18px;
-  }
+  .field { margin-bottom: 18px; }
   .field label {
     display: block;
     color: #94a3b8;
@@ -130,51 +128,60 @@
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA_RTcEktXQkKmDNRK9jMGOY8ZNIiTKcGU",
-  authDomain: "shahid-rezaei-1.firebaseapp.com",
-  projectId: "shahid-rezaei-1",
-  storageBucket: "shahid-rezaei-1.firebasestorage.app",
-  messagingSenderId: "444337328544",
-  appId: "1:444337328544:web:f79e0505d5ee1b86fd14c5"
-};
+// ===== اطلاعات اتصال Supabase =====
+const SUPABASE_URL = 'https://yuelptaojlwabhtrdoyp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1ZWxwdGFvamx3YWJodHJkb3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MTY3OTksImV4cCI6MjEwNTQ5Mjc5OX0.xt_TCzZeTrPtOQSftngCPuF84OtK2Rt-mO-xQHAHXpA';
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ===== المان‌ها =====
 const form = document.getElementById('loginForm');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const loginBtn = document.getElementById('loginBtn');
 const errorBox = document.getElementById('errorBox');
 
+// ===== بررسی اگه قبلاً لاگین کرده =====
+const { data: { session } } = await supabase.auth.getSession();
+if (session) {
+  window.location.href = 'panel.html';
+}
+
+// ===== ورود =====
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   errorBox.classList.remove('show');
   loginBtn.disabled = true;
   loginBtn.innerHTML = 'در حال ورود<span class="spinner"></span>';
 
-  try {
-    await signInWithEmailAndPassword(auth, emailInput.value.trim(), passwordInput.value);
-    window.location.href = 'panel.html';
-  } catch (err) {
-    console.error(err);
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: emailInput.value.trim(),
+    password: passwordInput.value
+  });
+
+  if (error) {
+    console.error(error);
     let msg = 'خطا در ورود. لطفاً دوباره تلاش کنید.';
-    if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+    if (error.message.includes('Invalid login credentials')) {
       msg = 'ایمیل یا رمز عبور اشتباه است.';
-    } else if (err.code === 'auth/invalid-email') {
+    } else if (error.message.includes('Email not confirmed')) {
+      msg = 'ایمیل شما تایید نشده است.';
+    } else if (error.message.includes('Invalid email')) {
       msg = 'فرمت ایمیل درست نیست.';
-    } else if (err.code === 'auth/too-many-requests') {
+    } else if (error.message.includes('Too many requests')) {
       msg = 'تلاش بیش از حد. چند دقیقه صبر کنید.';
     }
     errorBox.textContent = msg;
     errorBox.classList.add('show');
     loginBtn.disabled = false;
     loginBtn.textContent = 'ورود';
+    return;
   }
+
+  // ورود موفق
+  window.location.href = 'panel.html';
 });
 </script>
 
