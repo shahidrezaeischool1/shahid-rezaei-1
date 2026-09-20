@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دبیرستان شهید رضایی ۱ | تبریز</title>
+<meta name="description" content="وب‌سایت رسمی دبیرستان شهید رضایی ۱ تبریز - اخبار، اطلاعیه‌ها و اطلاعات مدرسه">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- هدر -->
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🏫</div>
+      <div class="logo-text">
+        <span class="logo-title">دبیرستان شهید رضایی ۱</span>
+        <span class="logo-sub">متوسطه دوم - تبریز</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html" class="active">خانه</a>
+      <a href="news.html">اخبار</a>
+      <a href="#about">درباره ما</a>
+      <a href="#contact">تماس</a>
+    </nav>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+</header>
+
+<!-- منوی موبایل -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">🏠 خانه</a>
+  <a href="news.html">📰 اخبار</a>
+  <a href="#about">📖 درباره ما</a>
+  <a href="#contact">📞 تماس</a>
+</div>
+
+<!-- بخش قهرمان (Hero) -->
+<section class="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+  <div class="container hero-content">
+    <div class="hero-badge">🎓 خوش آمدید به وب‌سایت رسمی مدرسه</div>
+    <h1>
+      دبیرستان <span class="gradient-text">شهید رضایی ۱</span>
+      <br>
+      <span class="hero-sub">جایی برای رشد، یادگیری و افتخار</span>
+    </h1>
+    <p class="hero-desc">
+      ما در دبیرستان شهید رضایی ۱ تبریز، با تکیه بر کادر مجرب و امکانات مدرن، محیطی پویا و صمیمی برای دانش‌آموزان فراهم کرده‌ایم تا استعدادهای خود را شکوفا کنند.
+    </p>
+    <div class="hero-btns">
+      <a href="news.html" class="btn btn-primary">📰 مشاهده اخبار</a>
+      <a href="#about" class="btn btn-secondary">📖 درباره مدرسه</a>
+    </div>
+  </div>
+</section>
+
+<!-- بخش میان‌برهای سریع -->
+<section class="features">
+  <div class="container">
+    <div class="features-grid">
+      <a href="news.html" class="feature-card card-blue">
+        <div class="feature-icon">📰</div>
+        <h3>اخبار و اطلاعیه‌ها</h3>
+        <p>آخرین اخبار، رویدادها و اطلاعیه‌های مدرسه</p>
+      </a>
+      <a href="#about" class="feature-card card-yellow">
+        <div class="feature-icon">📖</div>
+        <h3>درباره مدرسه</h3>
+        <p>تاریخچه، چشم‌انداز و امکانات مدرسه</p>
+      </a>
+      <a href="#" class="feature-card card-green">
+        <div class="feature-icon">🏆</div>
+        <h3>افتخارات</h3>
+        <p>موفقیت‌ها و افتخارات دانش‌آموزان</p>
+      </a>
+      <a href="#contact" class="feature-card card-pink">
+        <div class="feature-icon">📞</div>
+        <h3>تماس با ما</h3>
+        <p>راه‌های ارتباطی با مدرسه</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- آمار مدرسه -->
+<section class="stats">
+  <div class="container">
+    <h2 class="section-title">📊 مدرسه در یک نگاه</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">۴۵۰+</div>
+        <div class="stat-label">دانش‌آموز</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">۳۰+</div>
+        <div class="stat-label">معلم و کادر</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">۱۵</div>
+        <div class="stat-label">کلاس درس</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">۲۰+</div>
+        <div class="stat-label">سال تجربه</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- آخرین اخبار -->
+<section class="latest-news">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">📰 آخرین اخبار</h2>
+      <a href="news.html" class="see-all">مشاهده همه ←</a>
+    </div>
+    <div id="latestNews" class="news-grid">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <p>در حال بارگذاری اخبار...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- درباره ما -->
+<section class="about" id="about">
+  <div class="container">
+    <h2 class="section-title">📖 درباره دبیرستان شهید رضایی ۱</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <p>
+          دبیرستان شهید رضایی ۱ یکی از مدارس متوسطه دوم شهر تبریز است که با هدف تربیت نسل‌های متعهد، خلاق و دانشمند فعالیت می‌کند.
+        </p>
+        <p>
+          این مدرسه با بهره‌گیری از کادر آموزشی مجرب، امکانات آموزشی مدرن و فضایی صمیمی، همواره در تلاش است تا محیطی پویا برای رشد علمی و شخصیتی دانش‌آموزان فراهم کند.
+        </p>
+        <ul class="about-list">
+          <li>✅ کادر آموزشی مجرب و دلسوز</li>
+          <li>✅ آزمایشگاه‌های مجهز علوم</li>
+          <li>✅ کتابخانه و سالن مطالعه</li>
+          <li>✅ سالن ورزشی و امکانات ورزشی</li>
+          <li>✅ کارگاه‌های آموزشی و پژوهشی</li>
+        </ul>
+      </div>
+      <div class="about-image">
+        <div class="about-placeholder">🏫</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- تماس با ما -->
+<section class="contact" id="contact">
+  <div class="container">
+    <h2 class="section-title">📞 تماس با ما</h2>
+    <div class="contact-grid">
+      <div class="contact-card card-blue">
+        <div class="contact-icon">📍</div>
+        <h3>آدرس</h3>
+        <p>تبریز، [آدرس دقیق مدرسه اینجا نوشته شود]</p>
+      </div>
+      <div class="contact-card card-green">
+        <div class="contact-icon">📞</div>
+        <h3>تلفن</h3>
+        <p>[شماره تماس مدرسه اینجا نوشته شود]</p>
+      </div>
+      <div class="contact-card card-yellow">
+        <div class="contact-icon">✉️</div>
+        <h3>ایمیل</h3>
+        <p>info@shahidrezaei1.school</p>
+      </div>
+      <div class="contact-card card-pink">
+        <div class="contact-icon">🕐</div>
+        <h3>ساعات کاری</h3>
+        <p>شنبه تا چهارشنبه، ۷:۳۰ تا ۱۴:۰۰</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- فوتر -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>🏫 دبیرستان شهید رضایی ۱</h4>
+        <p>متوسطه دوم - تبریز</p>
+      </div>
+      <div>
+        <h4>لینک‌های سریع</h4>
+        <ul>
+          <li><a href="index.html">خانه</a></li>
+          <li><a href="news.html">اخبار</a></li>
+          <li><a href="#about">درباره ما</a></li>
+          <li><a href="#contact">تماس</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>ارتباط با ما</h4>
+        <p>📞 [شماره تماس]</p>
+        <p>✉️ info@shahidrezaei1.school</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© ۱۴۰۵ دبیرستان شهید رضایی ۱ | تمام حقوق محفوظ است</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_RTcEktXQkKmDNRK9jMGOY8ZNIiTKcGU",
+  authDomain: "shahid-rezaei-1.firebaseapp.com",
+  projectId: "shahid-rezaei-1",
+  storageBucket: "shahid-rezaei-1.firebasestorage.app",
+  messagingSenderId: "444337328544",
+  appId: "1:444337328544:web:f79e0505d5ee1b86fd14c5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+async function loadLatestNews() {
+  const container = document.getElementById('latestNews');
+  try {
+    const q = query(collection(db, 'news'), orderBy('createdAt', 'desc'), limit(3));
+    const snapshot = await getDocs(q);
+    const news = [];
+    snapshot.forEach(d => news.push({ id: d.id, ...d.data() }));
+
+    if (news.length === 0) {
+      container.innerHTML = '<div class="empty-box">📭 هنوز خبری منتشر نشده است.</div>';
+      return;
+    }
+
+    container.innerHTML = news.map(item => `
+      <a href="news.html" class="news-card">
+        ${item.image ? `<div class="news-image" style="background-image: url('${escapeHtml(item.image)}')"></div>` : '<div class="news-image news-image-placeholder">📰</div>'}
+        <div class="news-body">
+          <div class="news-date">${escapeHtml(item.date || '')}</div>
+          <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
+          <p>${escapeHtml((item.summary || item.content || '').substring(0, 120))}...</p>
+          <span class="news-read-more">ادامه مطلب ←</span>
+        </div>
+      </a>
+    `).join('');
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<div class="empty-box">❌ خطا در بارگذاری اخبار.</div>';
+  }
+}
+
+loadLatestNews();
+
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+</script>
+
+</body>
+</html>
