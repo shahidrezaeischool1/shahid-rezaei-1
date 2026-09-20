@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>برنامه امتحانات | دبیرستان شهید رضایی ۱</title>
+<meta name="description" content="برنامه امتحانات دبیرستان شهید رضایی ۱ تبریز">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .exam-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: #fff;
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    border-top: 4px solid #f59e0b;
+  }
+  .exam-filters label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 8px;
+  }
+  .exam-filters select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    background: #f8fafc;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .exam-filters select:focus {
+    outline: none;
+    border-color: #f59e0b;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+  }
+  .exams-list {
+    display: grid;
+    gap: 16px;
+  }
+  .exam-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-right: 5px solid #f59e0b;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .exam-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  .exam-card .exam-main {
+    flex: 1;
+    min-width: 200px;
+  }
+  .exam-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+  }
+  .exam-card .exam-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .exam-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tag-class {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  .tag-field {
+    background: #dcfce7;
+    color: #166534;
+  }
+  .tag-time {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .exam-date-box {
+    text-align: center;
+    background: linear-gradient(135deg, #fef3c7, #fed7aa);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid #fbbf24;
+  }
+  .exam-date-box .label {
+    font-size: 11px;
+    color: #78350f;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .exam-date-box .date {
+    font-size: 16px;
+    color: #78350f;
+    font-weight: 900;
+  }
+  .exam-note {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 20px;
+    color: #94a3b8;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  .empty-state .emoji {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 20px;
+    color: #94a3b8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  .spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #f59e0b;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 640px) {
+    .exam-filters { grid-template-columns: 1fr; padding: 18px; }
+    .exam-card { padding: 16px; }
+    .exam-card h3 { font-size: 16px; }
+    .exam-date-box { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🏫</div>
+      <div class="logo-text">
+        <span class="logo-title">دبیرستان شهید رضایی ۱</span>
+        <span class="logo-sub">متوسطه دوم - تبریز</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="news.html">اخبار</a>
+      <a href="exams.html" class="active">امتحانات</a>
+      <a href="index.html#about">درباره ما</a>
+    </nav>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">🏠 خانه</a>
+  <a href="news.html">📰 اخبار</a>
+  <a href="exams.html">📅 امتحانات</a>
+  <a href="index.html#about">📖 درباره ما</a>
+</div>
+
+<section class="page-header">
+  <div class="container">
+    <h1>📅 برنامه امتحانات</h1>
+    <p>برنامه امتحانات کلاس‌های مختلف - دبیرستان شهید رضایی ۱</p>
+  </div>
+</section>
+
+<section class="news-list">
+  <div class="container">
+
+    <!-- فیلترها -->
+    <div class="exam-filters">
+      <div>
+        <label>🏫 انتخاب کلاس</label>
+        <select id="filterClass">
+          <option value="">همه کلاس‌ها</option>
+          <option value="10-1">دهم ۱</option>
+          <option value="10-2">دهم ۲</option>
+          <option value="11-1">یازدهم ۱</option>
+          <option value="11-2">یازدهم ۲</option>
+          <option value="12-1">دوازدهم ۱</option>
+          <option value="12-2">دوازدهم ۲</option>
+        </select>
+      </div>
+      <div>
+        <label>📖 انتخاب رشته</label>
+        <select id="filterField">
+          <option value="">همه رشته‌ها</option>
+          <option value="riazi">ریاضی</option>
+          <option value="tajrobi">تجربی</option>
+          <option value="ensani">انسانی</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- لیست امتحان‌ها -->
+    <div id="examsContainer" class="exams-list">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>در حال بارگذاری امتحان‌ها...</p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="index.html" class="btn btn-secondary">← بازگشت به صفحه اصلی</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>🏫 دبیرستان شهید رضایی ۱</h4>
+        <p>متوسطه دوم - تبریز</p>
+      </div>
+      <div>
+        <h4>لینک‌های سریع</h4>
+        <ul>
+          <li><a href="index.html">خانه</a></li>
+          <li><a href="news.html">اخبار</a></li>
+          <li><a href="exams.html">امتحانات</a></li>
+          <li><a href="index.html#about">درباره ما</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>ارتباط با ما</h4>
+        <p>📞 [شماره تماس]</p>
+        <p>✉️ info@shahidrezaei1.school</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© ۱۴۰۵ دبیرستان شهید رضایی ۱ | تمام حقوق محفوظ است</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://yuelptaojlwabhtrdoyp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1ZWxwdGFvamx3YWJodHJkb3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MTY3OTksImV4cCI6MjEwNTQ5Mjc5OX0.xt_TCzZeTrPtOQSftngCPuF84OtK2Rt-mO-xQHAHXpA';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const classNames = {
+  '10-1': 'دهم ۱', '10-2': 'دهم ۲',
+  '11-1': 'یازدهم ۱', '11-2': 'یازدهم ۲',
+  '12-1': 'دوازدهم ۱', '12-2': 'دوازدهم ۲'
+};
+const fieldNames = {
+  'riazi': 'ریاضی', 'tajrobi': 'تجربی', 'ensani': 'انسانی'
+};
+
+let allExams = [];
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+function renderExams(exams) {
+  const container = document.getElementById('examsContainer');
+
+  if (exams.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="emoji">📭</span>
+        <p>امتحانی برای این کلاس و رشته یافت نشد.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = exams.map(item => `
+    <div class="exam-card">
+      <div class="exam-main">
+        <h3>📚 ${escapeHtml(item.subject || 'بدون عنوان')}</h3>
+        <div class="exam-tags">
+          ${item.class_name ? `<span class="exam-tag tag-class">🏫 ${classNames[item.class_name] || item.class_name}</span>` : ''}
+          ${item.field ? `<span class="exam-tag tag-field">📖 ${fieldNames[item.field] || item.field}</span>` : ''}
+          ${item.time ? `<span class="exam-tag tag-time">🕐 ${escapeHtml(item.time)}</span>` : ''}
+        </div>
+        ${item.note ? `<div class="exam-note">📝 ${escapeHtml(item.note)}</div>` : ''}
+      </div>
+      <div class="exam-date-box">
+        <div class="label">📅 تاریخ امتحان</div>
+        <div class="date">${escapeHtml(item.exam_date || 'ثبت نشده')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadExams() {
+  const container = document.getElementById('examsContainer');
+
+  const { data, error } = await supabase
+    .from('exams1')
+    .select('*')
+    .order('exam_date', { ascending: true });
+
+  if (error) {
+    console.error(error);
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="emoji">❌</span>
+        <p>خطا در بارگذاری امتحان‌ها.</p>
+      </div>
+    `;
+    return;
+  }
+
+  allExams = data || [];
+  applyFilters();
+}
+
+function applyFilters() {
+  const fClass = document.getElementById('filterClass').value;
+  const fField = document.getElementById('filterField').value;
+
+  let filtered = allExams;
+  if (fClass) filtered = filtered.filter(e => e.class_name === fClass);
+  if (fField) filtered = filtered.filter(e => e.field === fField);
+
+  renderExams(filtered);
+}
+
+document.getElementById('filterClass').addEventListener('change', applyFilters);
+document.getElementById('filterField').addEventListener('change', applyFilters);
+
+loadExams();
+
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+</script>
+
+</body>
+</html>
