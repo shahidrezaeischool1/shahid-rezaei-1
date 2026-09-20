@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>راهنمای کلاس‌ها | پنل امتحانات</title>
+<meta name="description" content="راهنمای آدرس کلاس‌ها برای معلم‌ها">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #eff6ff, #faf5ff, #fdf2f8);
+    background-attachment: fixed;
+    color: #1e293b;
+    line-height: 1.8;
+    min-height: 100vh;
+    padding: 30px 20px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .header-box {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid #f59e0b;
+  }
+  .header-box h1 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1e293b;
+    margin-bottom: 12px;
+  }
+  .header-box p {
+    font-size: 15px;
+    color: #64748b;
+  }
+  .info-box {
+    background: linear-gradient(135deg, #fef3c7, #fed7aa);
+    border: 1px solid #fbbf24;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #78350f;
+    line-height: 1.8;
+  }
+  .info-box strong {
+    font-weight: 800;
+  }
+  .info-box ol {
+    margin-top: 10px;
+    padding-right: 20px;
+  }
+  .info-box li {
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #f59e0b;
+    display: inline-block;
+  }
+  .class-group {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-right: 5px solid #4da6ff;
+  }
+  .class-group h2 {
+    font-size: 20px;
+    font-weight: 900;
+    color: #1e293b;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .class-group h2 .badge {
+    background: linear-gradient(135deg, #4da6ff, #2563eb);
+    color: #fff;
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  .link-row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+  }
+  .link-row:hover {
+    background: #eff6ff;
+    border-color: #4da6ff;
+    transform: translateX(-5px);
+  }
+  .field-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #10b981, #059669);
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .field-name.riazi { background: linear-gradient(135deg, #4da6ff, #2563eb); }
+  .field-name.tajrobi { background: linear-gradient(135deg, #10b981, #059669); }
+  .field-name.ensani { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .url-box {
+    background: #1e293b;
+    color: #7dd3fc;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    direction: ltr;
+    text-align: left;
+    overflow-x: auto;
+    white-space: nowrap;
+    letter-spacing: -0.5px;
+  }
+  .copy-btn {
+    background: linear-gradient(135deg, #f59e0b, #dc2626);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .copy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+  }
+  .copy-btn.copied {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+  .print-btn {
+    display: block;
+    margin: 30px auto;
+    background: linear-gradient(135deg, #4da6ff, #2563eb);
+    color: #fff;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(77, 166, 255, 0.4);
+  }
+  .print-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(77, 166, 255, 0.5);
+  }
+  .note-box {
+    background: #eff6ff;
+    border-right: 4px solid #4da6ff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    font-size: 14px;
+    color: #1e40af;
+    line-height: 1.8;
+  }
+  @media (max-width: 640px) {
+    .link-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .field-name {
+      justify-self: start;
+    }
+    .url-box {
+      font-size: 10px;
+    }
+    .header-box h1 {
+      font-size: 22px;
+    }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .copy-btn, .print-btn { display: none !important; }
+    .header-box, .class-group { box-shadow: none; border: 1px solid #ccc; }
+    .link-row { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header-box">
+    <h1>📅 راهنمای پنل امتحانات</h1>
+    <p>آدرس ورود معلم‌ها به پنل امتحانات برای هر کلاس و رشته</p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 راهنمای استفاده برای معلم‌ها:</strong>
+    <ol>
+      <li>کلاس و رشته‌ی خودتون رو پیدا کنید.</li>
+      <li>روی دکمه‌ی <strong>📋 کپی</strong> بزنید تا آدرس پنل کپی بشه.</li>
+      <li>آدرس رو توی مرورگر باز کنید.</li>
+      <li>با ایمیل و رمزی که بهتون داده شده، وارد بشید.</li>
+      <li>می‌تونید امتحان‌های کلاس خودتون رو ثبت کنید.</li>
+    </ol>
+  </div>
+
+  <h2 class="section-title">📚 کلاس‌ها و رشته‌ها</h2>
+
+  <!-- دهم ۱ -->
+  <div class="class-group">
+    <h2>🎓 دهم ۱ <span class="badge">کلاس دهم یک</span></h2>
+    <div class="link-row">
+      <div class="field-name riazi">ریاضی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=10-1&field=riazi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name tajrobi">تجربی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=10-1&field=tajrobi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name ensani">انسانی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=10-1&field=ensani</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+  </div>
+
+  <!-- دهم ۲ -->
+  <div class="class-group">
+    <h2>🎓 دهم ۲ <span class="badge">کلاس دهم دو</span></h2>
+    <div class="link-row">
+      <div class="field-name riazi">ریاضی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=10-2&field=riazi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name tajrobi">تجربی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=10-2&field=tajrobi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name ensani">انسانی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=10-2&field=ensani</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+  </div>
+
+  <!-- یازدهم ۱ -->
+  <div class="class-group">
+    <h2>🎓 یازدهم ۱ <span class="badge">کلاس یازدهم یک</span></h2>
+    <div class="link-row">
+      <div class="field-name riazi">ریاضی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=11-1&field=riazi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name tajrobi">تجربی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=11-1&field=tajrobi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name ensani">انسانی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=11-1&field=ensani</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+  </div>
+
+  <!-- یازدهم ۲ -->
+  <div class="class-group">
+    <h2>🎓 یازدهم ۲ <span class="badge">کلاس یازدهم دو</span></h2>
+    <div class="link-row">
+      <div class="field-name riazi">ریاضی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=11-2&field=riazi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name tajrobi">تجربی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=11-2&field=tajrobi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name ensani">انسانی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=11-2&field=ensani</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+  </div>
+
+  <!-- دوازدهم ۱ -->
+  <div class="class-group">
+    <h2>🎓 دوازدهم ۱ <span class="badge">کلاس دوازدهم یک</span></h2>
+    <div class="link-row">
+      <div class="field-name riazi">ریاضی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=12-1&field=riazi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name tajrobi">تجربی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=12-1&field=tajrobi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name ensani">انسانی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=12-1&field=ensani</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+  </div>
+
+  <!-- دوازدهم ۲ -->
+  <div class="class-group">
+    <h2>🎓 دوازدهم ۲ <span class="badge">کلاس دوازدهم دو</span></h2>
+    <div class="link-row">
+      <div class="field-name riazi">ریاضی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=12-2&field=riazi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name tajrobi">تجربی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=12-2&field=tajrobi</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+    <div class="link-row">
+      <div class="field-name ensani">انسانی</div>
+      <div class="url-box">https://shahidrezaeischool1.github.io/shahid-rezaei-1/mgmt/exams-panel.html?class=12-2&field=ensani</div>
+      <button class="copy-btn" onclick="copyLink(this)">📋 کپی</button>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">🖨 چاپ این صفحه</button>
+
+  <div class="note-box">
+    <strong>💡 نکته:</strong> این آدرس‌ها فقط برای <strong>معلم‌ها</strong> هستن. دانش‌آموزان می‌تونن از صفحه‌ی <a href="exams.html" style="color: #2563eb; font-weight: 700;">برنامه امتحانات</a> بدون لاگین امتحان‌ها رو ببینن.
+  </div>
+
+</div>
+
+<script>
+function copyLink(btn) {
+  const urlBox = btn.parentElement.querySelector('.url-box');
+  const url = urlBox.textContent.trim();
+
+  navigator.clipboard.writeText(url).then(() => {
+    btn.textContent = '✅ کپی شد';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 کپی';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // روش قدیمی برای مرورگرهای قدیمی
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    btn.textContent = '✅ کپی شد';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 کپی';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
