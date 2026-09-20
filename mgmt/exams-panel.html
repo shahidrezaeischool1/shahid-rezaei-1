@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل امتحانات</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  header {
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1e293b;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b, #dc2626);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #64748b;
+  }
+  .nav-btn {
+    background: #dbeafe;
+    color: #2563eb;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-btn:hover { background: #bfdbfe; }
+  .logout-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .logout-btn:hover { background: #fecaca; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .info-banner {
+    background: linear-gradient(135deg, #fef3c7, #fed7aa);
+    border: 1px solid #fbbf24;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #92400e;
+    font-weight: 600;
+  }
+  .info-banner .label {
+    font-size: 12px;
+    color: #78350f;
+    opacity: 0.8;
+    font-weight: 500;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    background: #fff;
+    padding: 6px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: #64748b;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    transition: all 0.3s;
+  }
+  .tab.active {
+    background: linear-gradient(135deg, #f59e0b, #dc2626);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1e293b;
+    transition: all 0.3s;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    outline: none;
+    border-color: #f59e0b;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  }
+  .field textarea { min-height: 80px; resize: vertical; }
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #f59e0b, #dc2626);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+  }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-danger {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+  .btn-danger:hover { background: #fecaca; }
+  .btn-edit {
+    background: #dbeafe;
+    color: #2563eb;
+  }
+  .btn-edit:hover { background: #bfdbfe; }
+  .msg {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    display: none;
+  }
+  .msg.show { display: block; }
+  .msg.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+  .msg.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+  .exam-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    border-right: 4px solid #f59e0b;
+  }
+  .exam-item-content { flex: 1; min-width: 0; }
+  .exam-item h3 {
+    font-size: 15px;
+    color: #1e293b;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+  }
+  .exam-item .meta {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  .exam-item .meta span {
+    display: inline-block;
+    margin-left: 10px;
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+  }
+  .exam-item .note {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    word-wrap: break-word;
+  }
+  .exam-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .exam-actions button {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #fef3c7;
+    border-radius: 12px;
+    border: 1px solid #fbbf24;
+  }
+  .filters label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #78350f;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .filters select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #fff;
+    color: #1e293b;
+  }
+  .empty {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+  }
+  .spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #f59e0b;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hidden { display: none !important; }
+  @media (max-width: 640px) {
+    .container { padding: 16px; }
+    .card { padding: 18px; }
+    .exam-item { flex-direction: column; }
+    .exam-actions { width: 100%; }
+    .exam-actions button { flex: 1; }
+    .row-2 { grid-template-columns: 1fr; }
+    .filters { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">📅</div>
+    <span>پنل مدیریت امتحانات</span>
+  </div>
+  <div class="user-info">
+    <a href="panel.html" class="nav-btn">📰 پنل اخبار</a>
+    <span id="userEmail">...</span>
+    <button class="logout-btn" id="logoutBtn">خروج</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="tabs">
+    <button class="tab active" data-tab="add">➕ امتحان جدید</button>
+    <button class="tab" data-tab="list">📋 لیست امتحان‌ها</button>
+  </div>
+
+  <!-- افزودن امتحان -->
+  <div id="tab-add">
+    <div class="card">
+      <h2>➕ افزودن امتحان جدید</h2>
+      <div class="msg" id="addMsg"></div>
+      <form id="examForm">
+        <div class="row-2">
+          <div class="field">
+            <label>کلاس *</label>
+            <select id="examClass" required>
+              <option value="">انتخاب کنید...</option>
+              <option value="10-1">دهم ۱</option>
+              <option value="10-2">دهم ۲</option>
+              <option value="11-1">یازدهم ۱</option>
+              <option value="11-2">یازدهم ۲</option>
+              <option value="12-1">دوازدهم ۱</option>
+              <option value="12-2">دوازدهم ۲</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>رشته *</label>
+            <select id="examField" required>
+              <option value="">انتخاب کنید...</option>
+              <option value="riazi">ریاضی</option>
+              <option value="tajrobi">تجربی</option>
+              <option value="ensani">انسانی</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label>تاریخ امتحان *</label>
+            <input type="text" id="examDate" required placeholder="مثلاً ۱۴۰۵/۰۵/۱۵">
+          </div>
+          <div class="field">
+            <label>نام درس *</label>
+            <input type="text" id="examSubject" required placeholder="مثلاً ریاضی، فیزیک، ادبیات">
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label>ساعت (اختیاری)</label>
+            <input type="text" id="examTime" placeholder="مثلاً ۱۰:۰۰ صبح">
+          </div>
+          <div class="field">
+            <label>ایمیل معلم (اختیاری)</label>
+            <input type="email" id="examTeacher" placeholder="teacher@example.com" style="direction: ltr;">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>توضیحات (اختیاری)</label>
+          <textarea id="examNote" placeholder="توضیحات اضافی مثل فصل امتحان، کتاب و..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">📤 ثبت امتحان</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- لیست امتحان‌ها -->
+  <div id="tab-list" class="hidden">
+    <div class="card">
+      <h2>📋 لیست امتحان‌ها</h2>
+
+      <div class="filters">
+        <div>
+          <label>فیلتر کلاس</label>
+          <select id="filterClass">
+            <option value="">همه کلاس‌ها</option>
+            <option value="10-1">دهم ۱</option>
+            <option value="10-2">دهم ۲</option>
+            <option value="11-1">یازدهم ۱</option>
+            <option value="11-2">یازدهم ۲</option>
+            <option value="12-1">دوازدهم ۱</option>
+            <option value="12-2">دوازدهم ۲</option>
+          </select>
+        </div>
+        <div>
+          <label>فیلتر رشته</label>
+          <select id="filterField">
+            <option value="">همه رشته‌ها</option>
+            <option value="riazi">ریاضی</option>
+            <option value="tajrobi">تجربی</option>
+            <option value="ensani">انسانی</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="examList">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- مودال ویرایش -->
+<div id="editModal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; overflow-y: auto;">
+  <div style="background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: auto;">
+    <h2 style="margin-bottom: 20px; font-size: 18px;">✏️ ویرایش امتحان</h2>
+    <div class="msg" id="editMsg"></div>
+    <form id="editForm">
+      <input type="hidden" id="editId">
+      <div class="row-2">
+        <div class="field">
+          <label>کلاس *</label>
+          <select id="editClass" required>
+            <option value="10-1">دهم ۱</option>
+            <option value="10-2">دهم ۲</option>
+            <option value="11-1">یازدهم ۱</option>
+            <option value="11-2">یازدهم ۲</option>
+            <option value="12-1">دوازدهم ۱</option>
+            <option value="12-2">دوازدهم ۲</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>رشته *</label>
+          <select id="editField" required>
+            <option value="riazi">ریاضی</option>
+            <option value="tajrobi">تجربی</option>
+            <option value="ensani">انسانی</option>
+          </select>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>تاریخ *</label>
+          <input type="text" id="editDate" required>
+        </div>
+        <div class="field">
+          <label>درس *</label>
+          <input type="text" id="editSubject" required>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>ساعت</label>
+          <input type="text" id="editTime">
+        </div>
+        <div class="field">
+          <label>ایمیل معلم</label>
+          <input type="email" id="editTeacher" style="direction: ltr;">
+        </div>
+      </div>
+      <div class="field">
+        <label>توضیحات</label>
+        <textarea id="editNote"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button type="submit" class="btn btn-primary" id="editSubmitBtn">💾 ذخیره تغییرات</button>
+        <button type="button" class="btn btn-danger" id="editCancelBtn">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://yuelptaojlwabhtrdoyp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1ZWxwdGFvamx3YWJodHJkb3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MTY3OTksImV4cCI6MjEwNTQ5Mjc5OX0.xt_TCzZeTrPtOQSftngCPuF84OtK2Rt-mO-xQHAHXpA';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const classNames = {
+  '10-1': 'دهم ۱', '10-2': 'دهم ۲',
+  '11-1': 'یازدهم ۱', '11-2': 'یازدهم ۲',
+  '12-1': 'دوازدهم ۱', '12-2': 'دوازدهم ۲'
+};
+const fieldNames = {
+  'riazi': 'ریاضی', 'tajrobi': 'تجربی', 'ensani': 'انسانی'
+};
+
+// ===== بررسی لاگین =====
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) {
+  window.location.href = 'index.html';
+} else {
+  document.getElementById('userEmail').textContent = session.user.email;
+  loadExams();
+}
+
+// ===== خروج =====
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'index.html';
+});
+
+// ===== تغییر تب =====
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.tab;
+    document.getElementById('tab-add').classList.toggle('hidden', target !== 'add');
+    document.getElementById('tab-list').classList.toggle('hidden', target !== 'list');
+  });
+});
+
+function showMsg(elId, text, type = 'success') {
+  const el = document.getElementById(elId);
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+  setTimeout(() => { el.classList.remove('show'); }, 4000);
+}
+
+// ===== افزودن امتحان =====
+document.getElementById('examForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'در حال ثبت...';
+
+  const { error } = await supabase.from('exams1').insert({
+    class_name: document.getElementById('examClass').value,
+    field: document.getElementById('examField').value,
+    exam_date: document.getElementById('examDate').value.trim(),
+    subject: document.getElementById('examSubject').value.trim(),
+    time: document.getElementById('examTime').value.trim(),
+    note: document.getElementById('examNote').value.trim(),
+    teacher_email: document.getElementById('examTeacher').value.trim()
+  });
+
+  if (error) {
+    console.error(error);
+    showMsg('addMsg', '❌ خطا در ثبت امتحان: ' + error.message, 'error');
+  } else {
+    showMsg('addMsg', '✅ امتحان با موفقیت ثبت شد!', 'success');
+    document.getElementById('examForm').reset();
+    loadExams();
+  }
+
+  btn.disabled = false;
+  btn.textContent = '📤 ثبت امتحان';
+});
+
+// ===== لیست امتحان‌ها =====
+let allExams = [];
+
+async function loadExams() {
+  const list = document.getElementById('examList');
+  list.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+  const { data, error } = await supabase
+    .from('exams1')
+    .select('*')
+    .order('exam_date', { ascending: true });
+
+  if (error) {
+    console.error(error);
+    list.innerHTML = '<div class="empty">❌ خطا در بارگذاری: ' + error.message + '</div>';
+    return;
+  }
+
+  allExams = data || [];
+  renderExamList();
+}
+
+function renderExamList() {
+  const list = document.getElementById('examList');
+  const fClass = document.getElementById('filterClass').value;
+  const fField = document.getElementById('filterField').value;
+
+  let filtered = allExams;
+  if (fClass) filtered = filtered.filter(e => e.class_name === fClass);
+  if (fField) filtered = filtered.filter(e => e.field === fField);
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">📭 امتحانی یافت نشد.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(item => `
+    <div class="exam-item">
+      <div class="exam-item-content">
+        <h3>📚 ${escapeHtml(item.subject || '')}</h3>
+        <div class="meta">
+          <span>🏫 ${classNames[item.class_name] || item.class_name || ''}</span>
+          <span>📖 ${fieldNames[item.field] || item.field || ''}</span>
+          <span>📅 ${escapeHtml(item.exam_date || '')}</span>
+          ${item.time ? `<span>🕐 ${escapeHtml(item.time)}</span>` : ''}
+        </div>
+        ${item.note ? `<div class="note">${escapeHtml(item.note)}</div>` : ''}
+      </div>
+      <div class="exam-actions">
+        <button class="btn-edit" onclick="editExam('${item.id}')">✏️ ویرایش</button>
+        <button class="btn-danger" onclick="deleteExam('${item.id}')">🗑 حذف</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('filterClass').addEventListener('change', renderExamList);
+document.getElementById('filterField').addEventListener('change', renderExamList);
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+// ===== ویرایش =====
+window.editExam = function(id) {
+  const item = allExams.find(n => String(n.id) === String(id));
+  if (!item) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('editClass').value = item.class_name || '10-1';
+  document.getElementById('editField').value = item.field || 'riazi';
+  document.getElementById('editDate').value = item.exam_date || '';
+  document.getElementById('editSubject').value = item.subject || '';
+  document.getElementById('editTime').value = item.time || '';
+  document.getElementById('editTeacher').value = item.teacher_email || '';
+  document.getElementById('editNote').value = item.note || '';
+  document.getElementById('editModal').classList.remove('hidden');
+};
+
+document.getElementById('editCancelBtn').addEventListener('click', () => {
+  document.getElementById('editModal').classList.add('hidden');
+});
+
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('editId').value;
+  const btn = document.getElementById('editSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'در حال ذخیره...';
+
+  const { error } = await supabase.from('exams1').update({
+    class_name: document.getElementById('editClass').value,
+    field: document.getElementById('editField').value,
+    exam_date: document.getElementById('editDate').value.trim(),
+    subject: document.getElementById('editSubject').value.trim(),
+    time: document.getElementById('editTime').value.trim(),
+    note: document.getElementById('editNote').value.trim(),
+    teacher_email: document.getElementById('editTeacher').value.trim()
+  }).eq('id', id);
+
+  if (error) {
+    console.error(error);
+    showMsg('editMsg', '❌ خطا: ' + error.message, 'error');
+  } else {
+    document.getElementById('editModal').classList.add('hidden');
+    showMsg('addMsg', '✅ امتحان با موفقیت ویرایش شد!', 'success');
+    loadExams();
+  }
+
+  btn.disabled = false;
+  btn.textContent = '💾 ذخیره تغییرات';
+});
+
+// ===== حذف =====
+window.deleteExam = async function(id) {
+  if (!confirm('آیا از حذف این امتحان مطمئن هستید؟')) return;
+  const { error } = await supabase.from('exams1').delete().eq('id', id);
+  if (error) {
+    alert('خطا در حذف: ' + error.message);
+  } else {
+    loadExams();
+  }
+};
+</script>
+
+</body>
+</html>
