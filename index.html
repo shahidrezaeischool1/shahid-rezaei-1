@@ -12,7 +12,6 @@
 </head>
 <body>
 
-<!-- هدر -->
 <header>
   <div class="container header-inner">
     <a href="index.html" class="logo">
@@ -32,7 +31,6 @@
   </div>
 </header>
 
-<!-- منوی موبایل -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html">🏠 خانه</a>
   <a href="news.html">📰 اخبار</a>
@@ -40,7 +38,6 @@
   <a href="#contact">📞 تماس</a>
 </div>
 
-<!-- بخش قهرمان (Hero) -->
 <section class="hero">
   <div class="hero-bg-shapes">
     <div class="shape shape-1"></div>
@@ -65,7 +62,6 @@
   </div>
 </section>
 
-<!-- بخش میان‌برهای سریع -->
 <section class="features">
   <div class="container">
     <div class="features-grid">
@@ -93,7 +89,6 @@
   </div>
 </section>
 
-<!-- آمار مدرسه -->
 <section class="stats">
   <div class="container">
     <h2 class="section-title">📊 مدرسه در یک نگاه</h2>
@@ -118,7 +113,6 @@
   </div>
 </section>
 
-<!-- آخرین اخبار -->
 <section class="latest-news">
   <div class="container">
     <div class="section-head">
@@ -134,7 +128,6 @@
   </div>
 </section>
 
-<!-- درباره ما -->
 <section class="about" id="about">
   <div class="container">
     <h2 class="section-title">📖 درباره دبیرستان شهید رضایی ۱</h2>
@@ -161,7 +154,6 @@
   </div>
 </section>
 
-<!-- تماس با ما -->
 <section class="contact" id="contact">
   <div class="container">
     <h2 class="section-title">📞 تماس با ما</h2>
@@ -190,7 +182,6 @@
   </div>
 </section>
 
-<!-- فوتر -->
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -220,20 +211,12 @@
 </footer>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA_RTcEktXQkKmDNRK9jMGOY8ZNIiTKcGU",
-  authDomain: "shahid-rezaei-1.firebaseapp.com",
-  projectId: "shahid-rezaei-1",
-  storageBucket: "shahid-rezaei-1.firebasestorage.app",
-  messagingSenderId: "444337328544",
-  appId: "1:444337328544:web:f79e0505d5ee1b86fd14c5"
-};
+const SUPABASE_URL = 'https://yuelptaojlwabhtrdoyp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1ZWxwdGFvamx3YWJodHJkb3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MTY3OTksImV4cCI6MjEwNTQ5Mjc5OX0.xt_TCzZeTrPtOQSftngCPuF84OtK2Rt-mO-xQHAHXpA';
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 function escapeHtml(str) {
   return String(str || '').replace(/[&<>"']/g, m => ({
@@ -243,32 +226,34 @@ function escapeHtml(str) {
 
 async function loadLatestNews() {
   const container = document.getElementById('latestNews');
-  try {
-    const q = query(collection(db, 'news'), orderBy('createdAt', 'desc'), limit(3));
-    const snapshot = await getDocs(q);
-    const news = [];
-    snapshot.forEach(d => news.push({ id: d.id, ...d.data() }));
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(3);
 
-    if (news.length === 0) {
-      container.innerHTML = '<div class="empty-box">📭 هنوز خبری منتشر نشده است.</div>';
-      return;
-    }
-
-    container.innerHTML = news.map(item => `
-      <a href="news.html" class="news-card">
-        ${item.image ? `<div class="news-image" style="background-image: url('${escapeHtml(item.image)}')"></div>` : '<div class="news-image news-image-placeholder">📰</div>'}
-        <div class="news-body">
-          <div class="news-date">${escapeHtml(item.date || '')}</div>
-          <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
-          <p>${escapeHtml((item.summary || item.content || '').substring(0, 120))}...</p>
-          <span class="news-read-more">ادامه مطلب ←</span>
-        </div>
-      </a>
-    `).join('');
-  } catch (err) {
-    console.error(err);
+  if (error) {
+    console.error(error);
     container.innerHTML = '<div class="empty-box">❌ خطا در بارگذاری اخبار.</div>';
+    return;
   }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="empty-box">📭 هنوز خبری منتشر نشده است.</div>';
+    return;
+  }
+
+  container.innerHTML = data.map(item => `
+    <a href="news.html" class="news-card">
+      ${item.image ? `<div class="news-image" style="background-image: url('${escapeHtml(item.image)}')"></div>` : '<div class="news-image news-image-placeholder">📰</div>'}
+      <div class="news-body">
+        <div class="news-date">${escapeHtml(item.date || '')}</div>
+        <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
+        <p>${escapeHtml((item.summary || item.content || '').substring(0, 120))}...</p>
+        <span class="news-read-more">ادامه مطلب ←</span>
+      </div>
+    </a>
+  `).join('');
 }
 
 loadLatestNews();
