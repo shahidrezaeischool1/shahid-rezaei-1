@@ -54,6 +54,7 @@
     gap: 10px;
     font-size: 13px;
     color: #64748b;
+    flex-wrap: wrap;
   }
   .nav-btn {
     background: #dbeafe;
@@ -84,21 +85,35 @@
   }
   .logout-btn:hover { background: #fecaca; }
   .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
-  .info-banner {
+  .class-banner {
     background: linear-gradient(135deg, #fef3c7, #fed7aa);
-    border: 1px solid #fbbf24;
-    border-radius: 12px;
-    padding: 16px 20px;
+    border: 2px solid #fbbf24;
+    border-radius: 16px;
+    padding: 20px 24px;
     margin-bottom: 20px;
-    font-size: 14px;
-    color: #92400e;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
   }
-  .info-banner .label {
+  .class-banner .icon {
+    font-size: 40px;
+  }
+  .class-banner .info {
+    flex: 1;
+    min-width: 200px;
+  }
+  .class-banner .label {
     font-size: 12px;
     color: #78350f;
+    font-weight: 600;
     opacity: 0.8;
-    font-weight: 500;
+  }
+  .class-banner .value {
+    font-size: 20px;
+    font-weight: 900;
+    color: #78350f;
   }
   .tabs {
     display: flex;
@@ -171,6 +186,13 @@
     border-color: #f59e0b;
     background: #fff;
     box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  }
+  .field input:disabled,
+  .field select:disabled {
+    background: #fef3c7;
+    color: #78350f;
+    font-weight: 700;
+    cursor: not-allowed;
   }
   .field textarea { min-height: 80px; resize: vertical; }
   .row-2 {
@@ -357,6 +379,15 @@
 
 <div class="container">
 
+  <!-- بنر کلاس و رشته (فقط وقتی از لینک کلاس وارد شده) -->
+  <div id="classBanner" class="class-banner hidden">
+    <div class="icon">🎓</div>
+    <div class="info">
+      <div class="label">شما در حال مدیریت امتحانات این کلاس هستید:</div>
+      <div class="value" id="bannerText">...</div>
+    </div>
+  </div>
+
   <div class="tabs">
     <button class="tab active" data-tab="add">➕ امتحان جدید</button>
     <button class="tab" data-tab="list">📋 لیست امتحان‌ها</button>
@@ -429,7 +460,7 @@
     <div class="card">
       <h2>📋 لیست امتحان‌ها</h2>
 
-      <div class="filters">
+      <div class="filters" id="filtersBox">
         <div>
           <label>فیلتر کلاس</label>
           <select id="filterClass">
@@ -538,12 +569,44 @@ const fieldNames = {
   'riazi': 'ریاضی', 'tajrobi': 'تجربی', 'ensani': 'انسانی'
 };
 
+// ===== خواندن پارامترهای URL =====
+const urlParams = new URLSearchParams(window.location.search);
+const presetClass = urlParams.get('class');
+const presetField = urlParams.get('field');
+
 // ===== بررسی لاگین =====
 const { data: { session } } = await supabase.auth.getSession();
 if (!session) {
   window.location.href = 'index.html';
 } else {
   document.getElementById('userEmail').textContent = session.user.email;
+
+  // اگه پارامتر کلاس و رشته توی URL بود، خودکار اعمال کن
+  if (presetClass && presetField && classNames[presetClass] && fieldNames[presetField]) {
+    // نمایش بنر
+    const banner = document.getElementById('classBanner');
+    banner.classList.remove('hidden');
+    document.getElementById('bannerText').textContent =
+      `${classNames[presetClass]} - رشته‌ی ${fieldNames[presetField]}`;
+
+    // پر کردن خودکار فیلدهای فرم
+    const examClassSelect = document.getElementById('examClass');
+    const examFieldSelect = document.getElementById('examField');
+    examClassSelect.value = presetClass;
+    examFieldSelect.value = presetField;
+
+    // غیرفعال کردن این فیلدها (چون از قبل تعیین شدن)
+    examClassSelect.disabled = true;
+    examFieldSelect.disabled = true;
+
+    // پر کردن فیلترهای لیست
+    document.getElementById('filterClass').value = presetClass;
+    document.getElementById('filterField').value = presetField;
+
+    // مخفی کردن فیلترهای لیست (چون از قبل مشخصه)
+    document.getElementById('filtersBox').classList.add('hidden');
+  }
+
   loadExams();
 }
 
@@ -593,7 +656,12 @@ document.getElementById('examForm').addEventListener('submit', async (e) => {
     showMsg('addMsg', '❌ خطا در ثبت امتحان: ' + error.message, 'error');
   } else {
     showMsg('addMsg', '✅ امتحان با موفقیت ثبت شد!', 'success');
-    document.getElementById('examForm').reset();
+    // پاک کردن فقط فیلدهای متنی (نه کلاس و رشته)
+    document.getElementById('examDate').value = '';
+    document.getElementById('examSubject').value = '';
+    document.getElementById('examTime').value = '';
+    document.getElementById('examNote').value = '';
+    document.getElementById('examTeacher').value = '';
     loadExams();
   }
 
