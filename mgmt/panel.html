@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* هدر */
+  header {
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1e293b;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4da6ff, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #64748b;
+  }
+  .logout-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .logout-btn:hover { background: #fecaca; }
+
+  /* محتوا */
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    background: #fff;
+    padding: 6px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: #64748b;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    transition: all 0.3s;
+  }
+  .tab.active {
+    background: linear-gradient(135deg, #4da6ff, #7c3aed);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(77, 166, 255, 0.3);
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1e293b;
+    transition: all 0.3s;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: #4da6ff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.15);
+  }
+  .field textarea { min-height: 120px; resize: vertical; }
+
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #4da6ff, #2563eb);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(77, 166, 255, 0.3);
+  }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-danger {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+  .btn-danger:hover { background: #fecaca; }
+  .btn-edit {
+    background: #dbeafe;
+    color: #2563eb;
+  }
+  .btn-edit:hover { background: #bfdbfe; }
+
+  /* پیام */
+  .msg {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    display: none;
+  }
+  .msg.show { display: block; }
+  .msg.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+  .msg.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  /* لیست اخبار */
+  .news-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .news-item-content { flex: 1; min-width: 0; }
+  .news-item h3 {
+    font-size: 15px;
+    color: #1e293b;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+  }
+  .news-item .meta {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  .news-item .preview {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .news-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .news-actions button {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .empty {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+  }
+  .spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #4da6ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 640px) {
+    .container { padding: 16px; }
+    .card { padding: 18px; }
+    .news-item { flex-direction: column; }
+    .news-actions { width: 100%; }
+    .news-actions button { flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">م</div>
+    <span>پنل مدیریت اخبار</span>
+  </div>
+  <div class="user-info">
+    <span id="userEmail">...</span>
+    <button class="logout-btn" id="logoutBtn">خروج</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="tabs">
+    <button class="tab active" data-tab="add">➕ خبر جدید</button>
+    <button class="tab" data-tab="list">📋 لیست اخبار</button>
+  </div>
+
+  <!-- بخش افزودن خبر -->
+  <div id="tab-add">
+    <div class="card">
+      <h2>➕ افزودن خبر جدید</h2>
+
+      <div class="msg" id="addMsg"></div>
+
+      <form id="newsForm">
+        <div class="field">
+          <label>عنوان خبر *</label>
+          <input type="text" id="newsTitle" required placeholder="مثلاً: آغاز امتحانات نوبت اول">
+        </div>
+
+        <div class="field">
+          <label>خلاصه (اختیاری)</label>
+          <input type="text" id="newsSummary" placeholder="یه توضیح کوتاه که توی کارت خبر نشون داده میشه">
+        </div>
+
+        <div class="field">
+          <label>متن کامل خبر *</label>
+          <textarea id="newsContent" required placeholder="متن کامل خبر رو اینجا بنویسید..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>لینک عکس (اختیاری)</label>
+          <input type="url" id="newsImage" placeholder="https://example.com/image.jpg" style="direction: ltr;">
+        </div>
+
+        <div class="field">
+          <label>تاریخ (اختیاری)</label>
+          <input type="text" id="newsDate" placeholder="مثلاً: ۱۴۰۵/۰۵/۱۵">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">📤 انتشار خبر</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- بخش لیست اخبار -->
+  <div id="tab-list" class="hidden">
+    <div class="card">
+      <h2>📋 لیست اخبار منتشرشده</h2>
+      <div id="newsList">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- مودال ویرایش -->
+<div id="editModal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000;">
+  <div style="background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+    <h2 style="margin-bottom: 20px; font-size: 18px;">✏️ ویرایش خبر</h2>
+    <div class="msg" id="editMsg"></div>
+    <form id="editForm">
+      <input type="hidden" id="editId">
+      <div class="field">
+        <label>عنوان خبر *</label>
+        <input type="text" id="editTitle" required>
+      </div>
+      <div class="field">
+        <label>خلاصه</label>
+        <input type="text" id="editSummary">
+      </div>
+      <div class="field">
+        <label>متن کامل *</label>
+        <textarea id="editContent" required></textarea>
+      </div>
+      <div class="field">
+        <label>لینک عکس</label>
+        <input type="url" id="editImage" style="direction: ltr;">
+      </div>
+      <div class="field">
+        <label>تاریخ</label>
+        <input type="text" id="editDate">
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button type="submit" class="btn btn-primary" id="editSubmitBtn">💾 ذخیره تغییرات</button>
+        <button type="button" class="btn btn-danger" id="editCancelBtn">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_RTcEktXQkKmDNRK9jMGOY8ZNIiTKcGU",
+  authDomain: "shahid-rezaei-1.firebaseapp.com",
+  projectId: "shahid-rezaei-1",
+  storageBucket: "shahid-rezaei-1.firebasestorage.app",
+  messagingSenderId: "444337328544",
+  appId: "1:444337328544:web:f79e0505d5ee1b86fd14c5"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// چک کردن لاگین
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = 'index.html';
+  } else {
+    document.getElementById('userEmail').textContent = user.email;
+    loadNews();
+  }
+});
+
+// خروج
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await signOut(auth);
+  window.location.href = 'index.html';
+});
+
+// تغییر تب
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.tab;
+    document.getElementById('tab-add').classList.toggle('hidden', target !== 'add');
+    document.getElementById('tab-list').classList.toggle('hidden', target !== 'list');
+  });
+});
+
+// نمایش پیام
+function showMsg(elId, text, type = 'success') {
+  const el = document.getElementById(elId);
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+  setTimeout(() => { el.classList.remove('show'); }, 4000);
+}
+
+// افزودن خبر
+document.getElementById('newsForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'در حال انتشار...';
+
+  try {
+    await addDoc(collection(db, 'news'), {
+      title: document.getElementById('newsTitle').value.trim(),
+      summary: document.getElementById('newsSummary').value.trim(),
+      content: document.getElementById('newsContent').value.trim(),
+      image: document.getElementById('newsImage').value.trim(),
+      date: document.getElementById('newsDate').value.trim(),
+      createdAt: serverTimestamp(),
+      author: auth.currentUser.email
+    });
+    showMsg('addMsg', '✅ خبر با موفقیت منتشر شد!', 'success');
+    document.getElementById('newsForm').reset();
+    loadNews();
+  } catch (err) {
+    console.error(err);
+    showMsg('addMsg', '❌ خطا در انتشار خبر: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 انتشار خبر';
+  }
+});
+
+// لیست اخبار
+async function loadNews() {
+  const list = document.getElementById('newsList');
+  list.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+  try {
+    const q = query(collection(db, 'news'), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    const news = [];
+    snapshot.forEach(d => news.push({ id: d.id, ...d.data() }));
+
+    if (news.length === 0) {
+      list.innerHTML = '<div class="empty">هنوز خبری منتشر نشده است.</div>';
+      return;
+    }
+
+    list.innerHTML = news.map(item => `
+      <div class="news-item">
+        <div class="news-item-content">
+          <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
+          <div class="meta">${escapeHtml(item.date || '')} ${item.author ? '· ' + escapeHtml(item.author) : ''}</div>
+          <div class="preview">${escapeHtml(item.summary || item.content || '').substring(0, 150)}</div>
+        </div>
+        <div class="news-actions">
+          <button class="btn-edit" onclick="editNews('${item.id}')">✏️ ویرایش</button>
+          <button class="btn-danger" onclick="deleteNews('${item.id}')">🗑 حذف</button>
+        </div>
+      </div>
+    `).join('');
+
+    window._news = news;
+  } catch (err) {
+    console.error(err);
+    list.innerHTML = '<div class="empty">❌ خطا در بارگذاری اخبار: ' + err.message + '</div>';
+  }
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+// ویرایش
+window.editNews = function(id) {
+  const item = window._news.find(n => n.id === id);
+  if (!item) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('editTitle').value = item.title || '';
+  document.getElementById('editSummary').value = item.summary || '';
+  document.getElementById('editContent').value = item.content || '';
+  document.getElementById('editImage').value = item.image || '';
+  document.getElementById('editDate').value = item.date || '';
+  document.getElementById('editModal').classList.remove('hidden');
+};
+
+document.getElementById('editCancelBtn').addEventListener('click', () => {
+  document.getElementById('editModal').classList.add('hidden');
+});
+
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('editId').value;
+  const btn = document.getElementById('editSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'در حال ذخیره...';
+
+  try {
+    await updateDoc(doc(db, 'news', id), {
+      title: document.getElementById('editTitle').value.trim(),
+      summary: document.getElementById('editSummary').value.trim(),
+      content: document.getElementById('editContent').value.trim(),
+      image: document.getElementById('editImage').value.trim(),
+      date: document.getElementById('editDate').value.trim()
+    });
+    document.getElementById('editModal').classList.add('hidden');
+    showMsg('addMsg', '✅ خبر با موفقیت ویرایش شد!', 'success');
+    loadNews();
+  } catch (err) {
+    console.error(err);
+    showMsg('editMsg', '❌ خطا: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 ذخیره تغییرات';
+  }
+});
+
+// حذف
+window.deleteNews = async function(id) {
+  if (!confirm('آیا از حذف این خبر مطمئن هستید؟')) return;
+  try {
+    await deleteDoc(doc(db, 'news', id));
+    loadNews();
+  } catch (err) {
+    alert('خطا در حذف: ' + err.message);
+  }
+};
+</script>
+
+</body>
+</html>
