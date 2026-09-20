@@ -9,6 +9,219 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  /* ===== انیمیشن‌های اضافی ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.05); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+  @keyframes iconSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(77, 166, 255, 0.7); }
+    50% { box-shadow: 0 0 0 20px rgba(77, 166, 255, 0); }
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+  }
+  @keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* hero badge انیمیشن */
+  .hero-badge {
+    animation: fadeInUp 0.8s ease 0.2s both, pulseGlow 2s infinite 1.5s;
+  }
+  .hero h1 {
+    animation: fadeInUp 0.8s ease 0.4s both;
+  }
+  .hero-sub {
+    animation: fadeInUp 0.8s ease 0.5s both;
+  }
+  .hero-desc {
+    animation: fadeInUp 0.8s ease 0.6s both;
+  }
+  .hero-btns {
+    animation: fadeInUp 0.8s ease 0.7s both;
+  }
+
+  /* کارت میان‌برها */
+  .feature-card {
+    animation: fadeInUp 0.7s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card:nth-child(1) { animation-delay: 0.1s; }
+  .feature-card:nth-child(2) { animation-delay: 0.2s; }
+  .feature-card:nth-child(3) { animation-delay: 0.3s; }
+  .feature-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+  }
+  .feature-card:hover::before {
+    left: 100%;
+  }
+
+  .feature-card:hover .feature-icon {
+    animation: floatIcon 1.5s ease-in-out infinite;
+  }
+
+  .feature-icon {
+    transition: transform 0.3s;
+  }
+
+  /* کارت‌های آماری */
+  .stat-card {
+    animation: bounceIn 0.8s ease both;
+    position: relative;
+  }
+  .stat-card:nth-child(1) { animation-delay: 0.2s; }
+  .stat-card:nth-child(2) { animation-delay: 0.3s; }
+  .stat-card:nth-child(3) { animation-delay: 0.4s; }
+  .stat-card:nth-child(4) { animation-delay: 0.5s; }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, #4da6ff, #7c3aed);
+    border-radius: 0 16px 16px 0;
+    transform: scaleY(0);
+    transition: transform 0.4s;
+  }
+  .stat-card:hover::after {
+    transform: scaleY(1);
+  }
+
+  /* کارت‌های خبری */
+  .news-card {
+    animation: fadeInScale 0.6s ease both;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .news-card:nth-child(1) { animation-delay: 0.1s; }
+  .news-card:nth-child(2) { animation-delay: 0.2s; }
+  .news-card:nth-child(3) { animation-delay: 0.3s; }
+
+  /* دکمه‌ها */
+  .btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+  }
+  .btn:hover::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* عنوان بخش‌ها */
+  .section-title {
+    animation: fadeInUp 0.6s ease both;
+  }
+  .section-head .see-all {
+    animation: slideInRight 0.6s ease both;
+    animation-delay: 0.3s;
+  }
+
+  /* هیرو گرادیانت متحرک */
+  .hero {
+    background: linear-gradient(135deg, #eff6ff, #faf5ff, #fdf2f8, #eff6ff);
+    background-size: 300% 300%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  /* لوگو چرخشی */
+  .logo:hover .logo-icon {
+    animation: iconSpin 1s ease-in-out;
+  }
+
+  /* بخش درباره ما */
+  .about-list li {
+    transition: all 0.3s;
+    padding-right: 0;
+  }
+  .about-list li:hover {
+    padding-right: 12px;
+    color: #2563eb;
+    border-bottom-color: #4da6ff;
+  }
+
+  /* اسکرول‌بار رنگی */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4da6ff, #7c3aed);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2563eb, #6d28d9);
+  }
+
+  /* ذرات شناور توی هیرو */
+  .floating-dot {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: wave 3s ease-in-out infinite;
+  }
+  .floating-dot:nth-child(5) { width: 10px; height: 10px; background: #4da6ff; top: 20%; left: 15%; animation-delay: 0s; }
+  .floating-dot:nth-child(6) { width: 15px; height: 15px; background: #f59e0b; top: 60%; right: 20%; animation-delay: 0.5s; }
+  .floating-dot:nth-child(7) { width: 8px; height: 8px; background: #ec4899; top: 30%; right: 40%; animation-delay: 1s; }
+  .floating-dot:nth-child(8) { width: 12px; height: 12px; background: #10b981; bottom: 30%; left: 25%; animation-delay: 1.5s; }
+  .floating-dot:nth-child(9) { width: 6px; height: 6px; background: #7c3aed; top: 70%; left: 50%; animation-delay: 2s; }
+
+  /* کارت نارنجی امتحانات */
+  .feature-card.card-orange { border-top-color: #f59e0b; }
+  .feature-card.card-orange .feature-icon { color: #f59e0b; }
+
+  /* انیمیشن ورود اخبار جدید */
+  @keyframes newsSlideIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .news-card.new-item {
+    animation: newsSlideIn 0.5s ease;
+  }
+</style>
 </head>
 <body>
 
@@ -24,6 +237,7 @@
     <nav>
       <a href="index.html" class="active">خانه</a>
       <a href="news.html">اخبار</a>
+      <a href="exams.html">امتحانات</a>
       <a href="#about">درباره ما</a>
       <a href="#contact">تماس</a>
     </nav>
@@ -34,6 +248,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html">🏠 خانه</a>
   <a href="news.html">📰 اخبار</a>
+  <a href="exams.html">📅 امتحانات</a>
   <a href="#about">📖 درباره ما</a>
   <a href="#contact">📞 تماس</a>
 </div>
@@ -44,6 +259,11 @@
     <div class="shape shape-2"></div>
     <div class="shape shape-3"></div>
     <div class="shape shape-4"></div>
+    <div class="floating-dot"></div>
+    <div class="floating-dot"></div>
+    <div class="floating-dot"></div>
+    <div class="floating-dot"></div>
+    <div class="floating-dot"></div>
   </div>
   <div class="container hero-content">
     <div class="hero-badge">🎓 خوش آمدید به وب‌سایت رسمی مدرسه</div>
@@ -57,6 +277,7 @@
     </p>
     <div class="hero-btns">
       <a href="news.html" class="btn btn-primary">📰 مشاهده اخبار</a>
+      <a href="exams.html" class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #dc2626);">📅 برنامه امتحانات</a>
       <a href="#about" class="btn btn-secondary">📖 درباره مدرسه</a>
     </div>
   </div>
@@ -70,15 +291,15 @@
         <h3>اخبار و اطلاعیه‌ها</h3>
         <p>آخرین اخبار، رویدادها و اطلاعیه‌های مدرسه</p>
       </a>
+      <a href="exams.html" class="feature-card card-orange">
+        <div class="feature-icon">📅</div>
+        <h3>برنامه امتحانات</h3>
+        <p>برنامه امتحانات کلاس‌های مختلف</p>
+      </a>
       <a href="#about" class="feature-card card-yellow">
         <div class="feature-icon">📖</div>
         <h3>درباره مدرسه</h3>
         <p>تاریخچه، چشم‌انداز و امکانات مدرسه</p>
-      </a>
-      <a href="#" class="feature-card card-green">
-        <div class="feature-icon">🏆</div>
-        <h3>افتخارات</h3>
-        <p>موفقیت‌ها و افتخارات دانش‌آموزان</p>
       </a>
       <a href="#contact" class="feature-card card-pink">
         <div class="feature-icon">📞</div>
@@ -194,6 +415,7 @@
         <ul>
           <li><a href="index.html">خانه</a></li>
           <li><a href="news.html">اخبار</a></li>
+          <li><a href="exams.html">امتحانات</a></li>
           <li><a href="#about">درباره ما</a></li>
           <li><a href="#contact">تماس</a></li>
         </ul>
