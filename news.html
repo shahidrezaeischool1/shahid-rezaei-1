@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اخبار مدرسه | دبیرستان شهید رضایی ۱</title>
+<meta name="description" content="آخرین اخبار و اطلاعیه‌های دبیرستان شهید رضایی ۱ تبریز">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- هدر -->
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🏫</div>
+      <div class="logo-text">
+        <span class="logo-title">دبیرستان شهید رضایی ۱</span>
+        <span class="logo-sub">متوسطه دوم - تبریز</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">خانه</a>
+      <a href="news.html" class="active">اخبار</a>
+      <a href="index.html#about">درباره ما</a>
+      <a href="index.html#contact">تماس</a>
+    </nav>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+</header>
+
+<!-- منوی موبایل -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">🏠 خانه</a>
+  <a href="news.html">📰 اخبار</a>
+  <a href="index.html#about">📖 درباره ما</a>
+  <a href="index.html#contact">📞 تماس</a>
+</div>
+
+<!-- هدر صفحه -->
+<section class="page-header">
+  <div class="container">
+    <h1>📰 اخبار و اطلاعیه‌ها</h1>
+    <p>آخرین رویدادها، اطلاعیه‌ها و اخبار دبیرستان شهید رضایی ۱</p>
+  </div>
+</section>
+
+<!-- اخبار -->
+<section class="news-list">
+  <div class="container">
+
+    <!-- جستجو -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 جستجو در اخبار...">
+    </div>
+
+    <!-- گرید اخبار -->
+    <div id="newsContainer" class="news-list-grid">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <p>در حال بارگذاری اخبار...</p>
+      </div>
+    </div>
+
+    <!-- دکمه بازگشت -->
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="index.html" class="btn btn-secondary">← بازگشت به صفحه اصلی</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- فوتر -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>🏫 دبیرستان شهید رضایی ۱</h4>
+        <p>متوسطه دوم - تبریز</p>
+      </div>
+      <div>
+        <h4>لینک‌های سریع</h4>
+        <ul>
+          <li><a href="index.html">خانه</a></li>
+          <li><a href="news.html">اخبار</a></li>
+          <li><a href="index.html#about">درباره ما</a></li>
+          <li><a href="index.html#contact">تماس</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>ارتباط با ما</h4>
+        <p>📞 [شماره تماس]</p>
+        <p>✉️ info@shahidrezaei1.school</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© ۱۴۰۵ دبیرستان شهید رضایی ۱ | تمام حقوق محفوظ است</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_RTcEktXQkKmDNRK9jMGOY8ZNIiTKcGU",
+  authDomain: "shahid-rezaei-1.firebaseapp.com",
+  projectId: "shahid-rezaei-1",
+  storageBucket: "shahid-rezaei-1.firebasestorage.app",
+  messagingSenderId: "444337328544",
+  appId: "1:444337328544:web:f79e0505d5ee1b86fd14c5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let allNews = [];
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+function renderNews(newsArray) {
+  const container = document.getElementById('newsContainer');
+  if (newsArray.length === 0) {
+    container.innerHTML = '<div class="empty-box">📭 خبری یافت نشد.</div>';
+    return;
+  }
+  container.innerHTML = newsArray.map(item => `
+    <div class="news-card" onclick="showNewsDetail('${item.id}')">
+      ${item.image ? `<div class="news-image" style="background-image: url('${escapeHtml(item.image)}')"></div>` : '<div class="news-image news-image-placeholder">📰</div>'}
+      <div class="news-body">
+        <div class="news-date">📅 ${escapeHtml(item.date || 'بدون تاریخ')}</div>
+        <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
+        <p>${escapeHtml((item.summary || item.content || '').substring(0, 150))}...</p>
+        <span class="news-read-more">ادامه مطلب ←</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadNews() {
+  const container = document.getElementById('newsContainer');
+  try {
+    const q = query(collection(db, 'news'), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    allNews = [];
+    snapshot.forEach(d => allNews.push({ id: d.id, ...d.data() }));
+    renderNews(allNews);
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<div class="empty-box">❌ خطا در بارگذاری اخبار.</div>';
+  }
+}
+
+loadNews();
+
+// جستجو
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  if (!q) { renderNews(allNews); return; }
+  const filtered = allNews.filter(n =>
+    (n.title || '').toLowerCase().includes(q) ||
+    (n.summary || '').toLowerCase().includes(q) ||
+    (n.content || '').toLowerCase().includes(q)
+  );
+  renderNews(filtered);
+});
+
+// نمایش جزئیات خبر
+window.showNewsDetail = function(id) {
+  const item = allNews.find(n => n.id === id);
+  if (!item) return;
+
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 9999; overflow-y: auto;';
+
+  modal.innerHTML = `
+    <div style="background: #fff; border-radius: 20px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative;">
+      <button onclick="this.closest('div[style]').remove()" style="position: absolute; top: 16px; left: 16px; width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.7); color: #fff; border: none; cursor: pointer; font-size: 20px; z-index: 10;">✕</button>
+      ${item.image ? `<div style="height: 250px; background: url('${escapeHtml(item.image)}') center/cover;"></div>` : `<div style="height: 150px; background: linear-gradient(135deg, #eff6ff, #faf5ff); display: flex; align-items: center; justify-content: center; font-size: 70px;">📰</div>`}
+      <div style="padding: 28px;">
+        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 8px;">📅 ${escapeHtml(item.date || 'بدون تاریخ')}</div>
+        <h2 style="font-size: 24px; font-weight: 800; color: #1e293b; margin-bottom: 16px; line-height: 1.5;">${escapeHtml(item.title || 'بدون عنوان')}</h2>
+        ${item.summary ? `<p style="font-size: 15px; color: #64748b; font-weight: 600; margin-bottom: 16px; padding: 12px; background: #f8fafc; border-radius: 10px; border-right: 4px solid #4da6ff;">${escapeHtml(item.summary)}</p>` : ''}
+        <div style="font-size: 15px; color: #475569; line-height: 2; white-space: pre-wrap;">${escapeHtml(item.content || '')}</div>
+      </div>
+    </div>
+  `;
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  document.body.appendChild(modal);
+};
+
+// منوی موبایل
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+</script>
+
+</body>
+</html>
