@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>پنل مدیریت</title>
+<title>پنل مدیریت اخبار</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,6 +25,8 @@
     top: 0;
     z-index: 100;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .logo {
     display: flex;
@@ -49,10 +51,25 @@
   .user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-size: 13px;
     color: #64748b;
   }
+  .nav-btn {
+    background: #fef3c7;
+    color: #92400e;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-btn:hover { background: #fde68a; }
   .logout-btn {
     background: #fee2e2;
     color: #dc2626;
@@ -275,12 +292,14 @@
     <span>پنل مدیریت اخبار</span>
   </div>
   <div class="user-info">
+    <a href="exams-panel.html" class="nav-btn">📅 پنل امتحانات</a>
     <span id="userEmail">...</span>
     <button class="logout-btn" id="logoutBtn">خروج</button>
   </div>
 </header>
 
 <div class="container">
+
   <div class="tabs">
     <button class="tab active" data-tab="add">➕ خبر جدید</button>
     <button class="tab" data-tab="list">📋 لیست اخبار</button>
@@ -290,28 +309,35 @@
   <div id="tab-add">
     <div class="card">
       <h2>➕ افزودن خبر جدید</h2>
+
       <div class="msg" id="addMsg"></div>
+
       <form id="newsForm">
         <div class="field">
           <label>عنوان خبر *</label>
           <input type="text" id="newsTitle" required placeholder="مثلاً: آغاز امتحانات نوبت اول">
         </div>
+
         <div class="field">
           <label>خلاصه (اختیاری)</label>
           <input type="text" id="newsSummary" placeholder="یه توضیح کوتاه که توی کارت خبر نشون داده میشه">
         </div>
+
         <div class="field">
           <label>متن کامل خبر *</label>
           <textarea id="newsContent" required placeholder="متن کامل خبر رو اینجا بنویسید..."></textarea>
         </div>
+
         <div class="field">
           <label>لینک عکس (اختیاری)</label>
           <input type="url" id="newsImage" placeholder="https://example.com/image.jpg" style="direction: ltr;">
         </div>
+
         <div class="field">
           <label>تاریخ (اختیاری)</label>
           <input type="text" id="newsDate" placeholder="مثلاً: ۱۴۰۵/۰۵/۱۵">
         </div>
+
         <button type="submit" class="btn btn-primary" id="submitBtn">📤 انتشار خبر</button>
       </form>
     </div>
@@ -326,11 +352,12 @@
       </div>
     </div>
   </div>
+
 </div>
 
 <!-- مودال ویرایش -->
-<div id="editModal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000;">
-  <div style="background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+<div id="editModal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; overflow-y: auto;">
+  <div style="background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: auto;">
     <h2 style="margin-bottom: 20px; font-size: 18px;">✏️ ویرایش خبر</h2>
     <div class="msg" id="editMsg"></div>
     <form id="editForm">
