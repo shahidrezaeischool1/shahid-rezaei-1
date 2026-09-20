@@ -14,8 +14,6 @@
     min-height: 100vh;
     line-height: 1.7;
   }
-
-  /* هدر */
   header {
     background: #fff;
     border-bottom: 1px solid #e2e8f0;
@@ -68,10 +66,7 @@
     transition: all 0.3s;
   }
   .logout-btn:hover { background: #fecaca; }
-
-  /* محتوا */
   .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
-
   .tabs {
     display: flex;
     gap: 8px;
@@ -100,7 +95,6 @@
     color: #fff;
     box-shadow: 0 4px 12px rgba(77, 166, 255, 0.3);
   }
-
   .card {
     background: #fff;
     border-radius: 16px;
@@ -116,7 +110,6 @@
     align-items: center;
     gap: 8px;
   }
-
   .field { margin-bottom: 16px; }
   .field label {
     display: block;
@@ -145,7 +138,6 @@
     box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.15);
   }
   .field textarea { min-height: 120px; resize: vertical; }
-
   .btn {
     padding: 12px 24px;
     border: none;
@@ -179,8 +171,6 @@
     color: #2563eb;
   }
   .btn-edit:hover { background: #bfdbfe; }
-
-  /* پیام */
   .msg {
     padding: 12px 16px;
     border-radius: 10px;
@@ -199,8 +189,6 @@
     color: #991b1b;
     border: 1px solid #fecaca;
   }
-
-  /* لیست اخبار */
   .news-item {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
@@ -269,9 +257,7 @@
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .hidden { display: none !important; }
-
   @media (max-width: 640px) {
     .container { padding: 16px; }
     .card { padding: 18px; }
@@ -295,7 +281,6 @@
 </header>
 
 <div class="container">
-
   <div class="tabs">
     <button class="tab active" data-tab="add">➕ خبر جدید</button>
     <button class="tab" data-tab="list">📋 لیست اخبار</button>
@@ -305,35 +290,28 @@
   <div id="tab-add">
     <div class="card">
       <h2>➕ افزودن خبر جدید</h2>
-
       <div class="msg" id="addMsg"></div>
-
       <form id="newsForm">
         <div class="field">
           <label>عنوان خبر *</label>
           <input type="text" id="newsTitle" required placeholder="مثلاً: آغاز امتحانات نوبت اول">
         </div>
-
         <div class="field">
           <label>خلاصه (اختیاری)</label>
           <input type="text" id="newsSummary" placeholder="یه توضیح کوتاه که توی کارت خبر نشون داده میشه">
         </div>
-
         <div class="field">
           <label>متن کامل خبر *</label>
           <textarea id="newsContent" required placeholder="متن کامل خبر رو اینجا بنویسید..."></textarea>
         </div>
-
         <div class="field">
           <label>لینک عکس (اختیاری)</label>
           <input type="url" id="newsImage" placeholder="https://example.com/image.jpg" style="direction: ltr;">
         </div>
-
         <div class="field">
           <label>تاریخ (اختیاری)</label>
           <input type="text" id="newsDate" placeholder="مثلاً: ۱۴۰۵/۰۵/۱۵">
         </div>
-
         <button type="submit" class="btn btn-primary" id="submitBtn">📤 انتشار خبر</button>
       </form>
     </div>
@@ -348,7 +326,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- مودال ویرایش -->
@@ -387,40 +364,29 @@
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA_RTcEktXQkKmDNRK9jMGOY8ZNIiTKcGU",
-  authDomain: "shahid-rezaei-1.firebaseapp.com",
-  projectId: "shahid-rezaei-1",
-  storageBucket: "shahid-rezaei-1.firebasestorage.app",
-  messagingSenderId: "444337328544",
-  appId: "1:444337328544:web:f79e0505d5ee1b86fd14c5"
-};
+const SUPABASE_URL = 'https://yuelptaojlwabhtrdoyp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1ZWxwdGFvamx3YWJodHJkb3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MTY3OTksImV4cCI6MjEwNTQ5Mjc5OX0.xt_TCzZeTrPtOQSftngCPuF84OtK2Rt-mO-xQHAHXpA';
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// چک کردن لاگین
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = 'index.html';
-  } else {
-    document.getElementById('userEmail').textContent = user.email;
-    loadNews();
-  }
-});
+// ===== بررسی لاگین =====
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) {
+  window.location.href = 'index.html';
+} else {
+  document.getElementById('userEmail').textContent = session.user.email;
+  loadNews();
+}
 
-// خروج
+// ===== خروج =====
 document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await signOut(auth);
+  await supabase.auth.signOut();
   window.location.href = 'index.html';
 });
 
-// تغییر تب
+// ===== تغییر تب =====
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -431,7 +397,6 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
-// نمایش پیام
 function showMsg(elId, text, type = 'success') {
   const el = document.getElementById(elId);
   el.textContent = text;
@@ -439,81 +404,81 @@ function showMsg(elId, text, type = 'success') {
   setTimeout(() => { el.classList.remove('show'); }, 4000);
 }
 
-// افزودن خبر
+// ===== افزودن خبر =====
 document.getElementById('newsForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'در حال انتشار...';
 
-  try {
-    await addDoc(collection(db, 'news'), {
-      title: document.getElementById('newsTitle').value.trim(),
-      summary: document.getElementById('newsSummary').value.trim(),
-      content: document.getElementById('newsContent').value.trim(),
-      image: document.getElementById('newsImage').value.trim(),
-      date: document.getElementById('newsDate').value.trim(),
-      createdAt: serverTimestamp(),
-      author: auth.currentUser.email
-    });
+  const { error } = await supabase.from('news').insert({
+    title: document.getElementById('newsTitle').value.trim(),
+    summary: document.getElementById('newsSummary').value.trim(),
+    content: document.getElementById('newsContent').value.trim(),
+    image: document.getElementById('newsImage').value.trim(),
+    date: document.getElementById('newsDate').value.trim()
+  });
+
+  if (error) {
+    console.error(error);
+    showMsg('addMsg', '❌ خطا در انتشار خبر: ' + error.message, 'error');
+  } else {
     showMsg('addMsg', '✅ خبر با موفقیت منتشر شد!', 'success');
     document.getElementById('newsForm').reset();
     loadNews();
-  } catch (err) {
-    console.error(err);
-    showMsg('addMsg', '❌ خطا در انتشار خبر: ' + err.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '📤 انتشار خبر';
   }
+
+  btn.disabled = false;
+  btn.textContent = '📤 انتشار خبر';
 });
 
-// لیست اخبار
+// ===== لیست اخبار =====
 async function loadNews() {
   const list = document.getElementById('newsList');
   list.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
 
-  try {
-    const q = query(collection(db, 'news'), orderBy('createdAt', 'desc'));
-    const snapshot = await getDocs(q);
-    const news = [];
-    snapshot.forEach(d => news.push({ id: d.id, ...d.data() }));
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-    if (news.length === 0) {
-      list.innerHTML = '<div class="empty">هنوز خبری منتشر نشده است.</div>';
-      return;
-    }
-
-    list.innerHTML = news.map(item => `
-      <div class="news-item">
-        <div class="news-item-content">
-          <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
-          <div class="meta">${escapeHtml(item.date || '')} ${item.author ? '· ' + escapeHtml(item.author) : ''}</div>
-          <div class="preview">${escapeHtml(item.summary || item.content || '').substring(0, 150)}</div>
-        </div>
-        <div class="news-actions">
-          <button class="btn-edit" onclick="editNews('${item.id}')">✏️ ویرایش</button>
-          <button class="btn-danger" onclick="deleteNews('${item.id}')">🗑 حذف</button>
-        </div>
-      </div>
-    `).join('');
-
-    window._news = news;
-  } catch (err) {
-    console.error(err);
-    list.innerHTML = '<div class="empty">❌ خطا در بارگذاری اخبار: ' + err.message + '</div>';
+  if (error) {
+    console.error(error);
+    list.innerHTML = '<div class="empty">❌ خطا در بارگذاری اخبار: ' + error.message + '</div>';
+    return;
   }
+
+  if (!data || data.length === 0) {
+    list.innerHTML = '<div class="empty">هنوز خبری منتشر نشده است.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(item => `
+    <div class="news-item">
+      <div class="news-item-content">
+        <h3>${escapeHtml(item.title || 'بدون عنوان')}</h3>
+        <div class="meta">${escapeHtml(item.date || '')}</div>
+        <div class="preview">${escapeHtml(item.summary || item.content || '').substring(0, 150)}</div>
+      </div>
+      <div class="news-actions">
+        <button class="btn-edit" onclick="editNews('${item.id}')">✏️ ویرایش</button>
+        <button class="btn-danger" onclick="deleteNews('${item.id}')">🗑 حذف</button>
+      </div>
+    </div>
+  `).join('');
+
+  window._news = data;
 }
 
 function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, m => ({
+  return String(str || '').replace(/[&<>"']/g, m => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[m]));
 }
 
-// ویرایش
+// ===== ویرایش =====
 window.editNews = function(id) {
-  const item = window._news.find(n => n.id === id);
+  const item = window._news.find(n => String(n.id) === String(id));
   if (!item) return;
   document.getElementById('editId').value = id;
   document.getElementById('editTitle').value = item.title || '';
@@ -535,34 +500,35 @@ document.getElementById('editForm').addEventListener('submit', async (e) => {
   btn.disabled = true;
   btn.textContent = 'در حال ذخیره...';
 
-  try {
-    await updateDoc(doc(db, 'news', id), {
-      title: document.getElementById('editTitle').value.trim(),
-      summary: document.getElementById('editSummary').value.trim(),
-      content: document.getElementById('editContent').value.trim(),
-      image: document.getElementById('editImage').value.trim(),
-      date: document.getElementById('editDate').value.trim()
-    });
+  const { error } = await supabase.from('news').update({
+    title: document.getElementById('editTitle').value.trim(),
+    summary: document.getElementById('editSummary').value.trim(),
+    content: document.getElementById('editContent').value.trim(),
+    image: document.getElementById('editImage').value.trim(),
+    date: document.getElementById('editDate').value.trim()
+  }).eq('id', id);
+
+  if (error) {
+    console.error(error);
+    showMsg('editMsg', '❌ خطا: ' + error.message, 'error');
+  } else {
     document.getElementById('editModal').classList.add('hidden');
     showMsg('addMsg', '✅ خبر با موفقیت ویرایش شد!', 'success');
     loadNews();
-  } catch (err) {
-    console.error(err);
-    showMsg('editMsg', '❌ خطا: ' + err.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '💾 ذخیره تغییرات';
   }
+
+  btn.disabled = false;
+  btn.textContent = '💾 ذخیره تغییرات';
 });
 
-// حذف
+// ===== حذف =====
 window.deleteNews = async function(id) {
   if (!confirm('آیا از حذف این خبر مطمئن هستید؟')) return;
-  try {
-    await deleteDoc(doc(db, 'news', id));
+  const { error } = await supabase.from('news').delete().eq('id', id);
+  if (error) {
+    alert('خطا در حذف: ' + error.message);
+  } else {
     loadNews();
-  } catch (err) {
-    alert('خطا در حذف: ' + err.message);
   }
 };
 </script>
